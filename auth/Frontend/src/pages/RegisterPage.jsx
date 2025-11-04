@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { User, Lock, Phone, Mail, ArrowRight, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -16,17 +19,19 @@ export default function RegisterPage() {
     setError("");
     setIsLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, username, phone }),
-      });
-      if (!res.ok) {
-        throw new Error("Registration failed");
-      }
+      const res = await axios.post(
+        `${API_BASE}/api/auth/register`,
+        { email, password, username, phone },
+        { headers: { "Content-Type": "application/json" }, timeout: 15000 }
+      );
       navigate("/login");
     } catch (err) {
-      setError("Registration failed: " + (err.message || "Unknown error"));
+      const message =
+        err?.response?.data?.message ||
+        err?.response?.data ||
+        err?.message ||
+        "Registration failed";
+      setError("Registration failed: " + message);
     } finally {
       setIsLoading(false);
     }
