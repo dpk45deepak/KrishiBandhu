@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KrishiBandhu | SIH 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-blue: #2563eb;
+            --teal: #0d9488;
+            --indigo: #4f46e5;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- Animated Tech Grid Background --- */
+        .bg-grid {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: 
+                linear-gradient(to right, rgba(13, 148, 136, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(13, 148, 136, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
+            animation: gridMove 20s linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes gridMove {
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(50px) translateZ(-200px); }
+        }
+
+        /* --- Preloader --- */
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease-out, visibility 0.6s;
+        }
+        .loader-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: pulseFade 1.5s ease-in-out infinite alternate;
+        }
+        .loader-logo span { color: var(--teal); }
+        @keyframes pulseFade {
+            0% { opacity: 0.5; transform: scale(0.98); }
+            100% { opacity: 1; transform: scale(1.02); text-shadow: 0 0 20px rgba(13,148,136,0.5); }
+        }
+
+        /* --- Custom Scrollbar --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--light); }
+        ::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 10px; }
+
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+
+        /* --- Navigation --- */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 1.5rem 0;
+            transition: var(--transition);
+        }
+        header.scrolled {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            padding: 1rem 0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid var(--glass-border);
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo span { color: var(--teal); }
+        .nav-links { display: flex; list-style: none; gap: 2.5rem; }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            opacity: 0.7;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px;
+            background: var(--primary-blue); transition: width 0.3s ease;
+        }
+        .nav-links a:hover { opacity: 1; color: var(--primary-blue); }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* --- Hero Section --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-top: 80px;
+        }
+        .hero-bg-glow {
+            position: absolute; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(79,70,229,0.15) 0%, rgba(255,255,255,0) 70%);
+            top: 10%; right: -10%; border-radius: 50%; z-index: 1;
+            animation: floatGlow 8s ease-in-out infinite alternate;
+        }
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-50px, 50px) scale(1.1); }
+        }
+        .hero-content { max-width: 800px; position: relative; z-index: 2; }
+        .badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 8px 20px; background: rgba(13, 148, 136, 0.1);
+            color: var(--teal); border-radius: 100px; font-weight: 700;
+            font-size: 0.85rem; margin-bottom: 2rem; border: 1px solid rgba(13, 148, 136, 0.2);
+            box-shadow: 0 4px 15px rgba(13, 148, 136, 0.1);
+        }
+        .badge i { font-size: 1rem; }
+        .hero h1 {
+            font-size: clamp(3rem, 5vw, 4.5rem);
+            line-height: 1.1; font-weight: 800; margin-bottom: 1.5rem;
+            color: var(--dark); letter-spacing: -1px;
+        }
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--primary-blue), var(--teal));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 1.25rem; color: #64748b; margin-bottom: 2.5rem; line-height: 1.7; max-width: 600px;
+        }
+        .btn-group { display: flex; gap: 15px; flex-wrap: wrap; }
+        .btn-primary {
+            padding: 16px 36px; background: linear-gradient(135deg, var(--primary-blue), var(--indigo));
+            color: white; border-radius: 12px; text-decoration: none; font-weight: 700;
+            transition: var(--transition); box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 30px rgba(79, 70, 229, 0.3);
+        }
+        .btn-secondary {
+            padding: 16px 36px; background: rgba(255,255,255,0.8); backdrop-filter: blur(10px);
+            color: var(--dark); border-radius: 12px; text-decoration: none; font-weight: 700;
+            transition: var(--transition); border: 1px solid var(--glass-border);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .btn-secondary:hover { background: white; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+
+        /* --- Sections Common --- */
+        .section { padding: 120px 0; position: relative; z-index: 2; }
+        .section-header { text-align: center; margin-bottom: 80px; }
+        .section-header h2 { font-size: 2.8rem; margin-bottom: 15px; font-weight: 800; }
+        .section-header p { color: #64748b; font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
+
+        /* --- 3D Interactive Glass Cards --- */
+        .tilt-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            border-radius: 24px;
+            padding: 40px;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+            transform-style: preserve-3d;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            position: relative;
+            overflow: hidden;
+        }
+        /* Dynamic Glow Effect tied to JS */
+        .tilt-card::before {
+            content: ''; position: absolute; top: var(--y, 50%); left: var(--x, 50%);
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(13,148,136,0.1) 0%, transparent 70%);
+            transform: translate(-50%, -50%); pointer-events: none; opacity: 0; transition: opacity 0.3s;
+        }
+        .tilt-card:hover::before { opacity: 1; }
+        .tilt-card > * { transform: translateZ(30px); /* Pops content out */ }
+        .icon-box {
+            width: 65px; height: 65px; background: white; border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; color: var(--teal); margin-bottom: 25px;
+            box-shadow: 0 10px 20px rgba(13,148,136,0.1);
+        }
+
+        /* --- Platform Preview Dashboard (Mock UI) --- */
+        .dashboard-preview {
+            background: rgba(255,255,255,0.9);
+            border-radius: 24px; border: 1px solid var(--white);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.08); overflow: hidden;
+            display: flex; flex-direction: column;
+        }
+        .dash-header {
+            background: var(--dark); color: white; padding: 20px 30px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .dash-dots { display: flex; gap: 8px; }
+        .dash-dot { width: 12px; height: 12px; border-radius: 50%; background: #ef4444; }
+        .dash-dot:nth-child(2) { background: #eab308; }
+        .dash-dot:nth-child(3) { background: #22c55e; }
+        .dash-body { padding: 40px; display: grid; grid-template-columns: 1fr 2fr; gap: 30px; }
+        .dash-sidebar { background: var(--light); border-radius: 16px; padding: 20px; }
+        .dash-stat { margin-bottom: 20px; }
+        .dash-stat span { display: block; color: #64748b; font-size: 0.9rem; margin-bottom: 5px; }
+        .dash-stat strong { font-size: 1.5rem; color: var(--indigo); font-weight: 700; }
+        .dash-main { background: var(--light); border-radius: 16px; padding: 30px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .mock-chart { width: 100%; height: 150px; display: flex; align-items: flex-end; gap: 15px; border-bottom: 2px solid #cbd5e1; padding-bottom: 10px; }
+        .chart-bar { flex: 1; background: linear-gradient(to top, var(--teal), var(--primary-blue)); border-radius: 6px 6px 0 0; animation: barGrow 1.5s ease-out forwards; transform-origin: bottom; opacity: 0;}
+        @keyframes barGrow { from { transform: scaleY(0); opacity: 0; } to { transform: scaleY(1); opacity: 1; } }
+
+        /* --- Tech Tags --- */
+        .tech-tags { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+        .tech-tag {
+            font-size: 0.8rem; font-weight: 700; padding: 6px 14px;
+            background: white; color: var(--indigo); border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 6px;
+        }
+
+        /* --- Footer --- */
+        footer { background: var(--dark); color: white; padding: 80px 0 30px; position: relative; overflow: hidden;}
+        footer::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(79,70,229,0.2) 0%, transparent 70%); pointer-events: none;
+        }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 50px; position: relative; z-index: 1;}
+
+        /* --- Scroll Reveal Animations --- */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 2.8rem; }
+            .dash-body { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <div class="loader-logo">
+            <i class="fas fa-seedling" style="color: var(--teal);"></i>
+            Krishi<span>Bandhu</span>
+        </div>
+    </div>
+
+    <div class="bg-grid"></div>
+
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="#" class="logo"><i class="fas fa-cube"></i> Krishi<span>Bandhu</span></a>
+                <ul class="nav-links">
+                    <li><a href="#problem">Challenges</a></li>
+                    <li><a href="#architecture">Architecture</a></li>
+                    <li><a href="#preview">Platform</a></li>
+                </ul>
+                <a href="https://github.com/deep-45deepak/GreenTech" class="btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">
+                    <i class="fab fa-github"></i> View Repo
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-bg-glow"></div>
+        <div class="container">
+            <div class="hero-content reveal active">
+                <div class="badge"><i class="fas fa-trophy"></i> Smart India Hackathon 2025</div>
+                <h1>Empowering Agriculture through <span>Predictive AI.</span></h1>
+                <p>A decentralized, ML-driven ecosystem built to eliminate intermediaries, optimize crop yields, and bring absolute transparency to the Indian agricultural supply chain.</p>
+                <div class="btn-group">
+                    <a href="#architecture" class="btn-primary">Explore Architecture <i class="fas fa-arrow-right"></i></a>
+                    <a href="#preview" class="btn-secondary"><i class="fas fa-desktop"></i> View Live Dashboard</a>
+                </div>
+                <div class="tech-tags" style="margin-top: 40px;">
+                    <span class="tech-tag"><i class="fab fa-react"></i> Next.js</span>
+                    <span class="tech-tag"><i class="fab fa-node-js"></i> Node.js</span>
+                    <span class="tech-tag"><i class="fas fa-database"></i> MongoDB</span>
+                    <span class="tech-tag"><i class="fab fa-python"></i> ML/Python</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="problem" class="section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>The Agricultural Disconnect</h2>
+                <p>Identifying the root causes of inefficiency in traditional farming models.</p>
+            </div>
+            <div class="grid">
+                <div class="tilt-card reveal">
+                    <div class="icon-box"><i class="fas fa-link-slash"></i></div>
+                    <h3>Supply Chain Gaps</h3>
+                    <p style="color: #64748b; line-height: 1.6; margin-top: 10px;">Farmers lose up to 40% of potential revenue to multiple layers of intermediaries before produce reaches the market.</p>
+                </div>
+                <div class="tilt-card reveal" style="border-top: 4px solid var(--indigo);">
+                    <div class="icon-box" style="color: var(--indigo);"><i class="fas fa-brain"></i></div>
+                    <h3>Data Deficit</h3>
+                    <p style="color: #64748b; line-height: 1.6; margin-top: 10px;">Crop selection relies on intuition rather than soil pH, historical weather data, and real-time market demand.</p>
+                </div>
+                <div class="tilt-card reveal">
+                    <div class="icon-box" style="color: var(--primary-blue);"><i class="fas fa-language"></i></div>
+                    <h3>Digital Literacy</h3>
+                    <p style="color: #64748b; line-height: 1.6; margin-top: 10px;">Complex UIs alienate rural users. A lack of voice-assisted, localized technology prevents widespread adoption.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="preview" class="section" style="padding: 60px 0;">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Platform UI Preview</h2>
+                <p>A glimpse into the dashboard built for modern farmers and retailers.</p>
+            </div>
+            
+            <div class="dashboard-preview reveal">
+                <div class="dash-header">
+                    <div class="dash-dots">
+                        <div class="dash-dot"></div><div class="dash-dot"></div><div class="dash-dot"></div>
+                    </div>
+                    <div style="font-family: 'Space Grotesk'; font-weight: 700;">Farmer Portal Workspace</div>
+                    <div><i class="fas fa-user-circle" style="font-size: 1.5rem;"></i></div>
+                </div>
+                <div class="dash-body">
+                    <div class="dash-sidebar">
+                        <div class="dash-stat">
+                            <span>Predicted Yield (Wheat)</span>
+                            <strong>4.2 Tons / Hectare</strong>
+                        </div>
+                        <div class="dash-stat">
+                            <span>Current Market Rate</span>
+                            <strong style="color: var(--teal);">₹2,275 / Quintal</strong>
+                        </div>
+                        <div class="dash-stat">
+                            <span>Soil Moisture Alert</span>
+                            <strong style="color: #ef4444; font-size: 1.1rem;"><i class="fas fa-exclamation-triangle"></i> Irrigation Needed</strong>
+                        </div>
+                    </div>
+                    <div class="dash-main">
+                        <h4 style="align-self: flex-start; margin-bottom: 20px; color: var(--dark);">ML Demand Forecast (Next 6 Months)</h4>
+                        <div class="mock-chart" id="chart">
+                            <div class="chart-bar" style="height: 30%; animation-delay: 0.1s;"></div>
+                            <div class="chart-bar" style="height: 50%; animation-delay: 0.2s;"></div>
+                            <div class="chart-bar" style="height: 40%; animation-delay: 0.3s;"></div>
+                            <div class="chart-bar" style="height: 80%; animation-delay: 0.4s;"></div>
+                            <div class="chart-bar" style="height: 95%; animation-delay: 0.5s;"></div>
+                            <div class="chart-bar" style="height: 60%; animation-delay: 0.6s;"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; width: 100%; margin-top: 10px; color: #64748b; font-size: 0.8rem; font-weight: 600;">
+                            <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="architecture" class="section">
+        <div class="container">
+            <div class="dashboard-preview reveal" style="background: linear-gradient(135deg, var(--indigo), var(--primary-blue)); color: white; border: none; padding: 60px;">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 10px;">System Architecture</h2>
+                    <p style="opacity: 0.8; font-size: 1.1rem;">Full-Stack integration bridging raw data with end-user decisions.</p>
+                </div>
+                
+                <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 30px; text-align: center;">
+                    <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 16px; flex: 1; min-width: 200px; backdrop-filter: blur(10px);">
+                        <i class="fas fa-mobile-alt" style="font-size: 2.5rem; margin-bottom: 15px;"></i>
+                        <h4 style="font-size: 1.2rem; margin-bottom: 10px;">Frontend Edge</h4>
+                        <p style="font-size: 0.9rem; opacity: 0.8;">Next.js & React rendering real-time UI with Framer Motion animations.</p>
+                    </div>
+                    <div style="display: flex; align-items: center; opacity: 0.5;"><i class="fas fa-chevron-right" style="font-size: 2rem;"></i></div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 16px; flex: 1; min-width: 200px; backdrop-filter: blur(10px);">
+                        <i class="fas fa-server" style="font-size: 2.5rem; margin-bottom: 15px;"></i>
+                        <h4 style="font-size: 1.2rem; margin-bottom: 10px;">Core API Logic</h4>
+                        <p style="font-size: 0.9rem; opacity: 0.8;">Node.js / Express handling authentication, requests, and Mongoose schemas.</p>
+                    </div>
+                    <div style="display: flex; align-items: center; opacity: 0.5;"><i class="fas fa-chevron-right" style="font-size: 2rem;"></i></div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 16px; flex: 1; min-width: 200px; backdrop-filter: blur(10px);">
+                        <i class="fas fa-network-wired" style="font-size: 2.5rem; margin-bottom: 15px;"></i>
+                        <h4 style="font-size: 1.2rem; margin-bottom: 10px;">ML & Data</h4>
+                        <p style="font-size: 0.9rem; opacity: 0.8;">Python scripts crunching Pandas dataframes, storing results in MongoDB.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3 style="font-family: 'Space Grotesk'; font-size: 1.8rem; margin-bottom: 20px;">Krishi<span style="color: var(--teal);">Bandhu</span></h3>
+                    <p style="opacity: 0.6; max-width: 300px; line-height: 1.6;">A Smart India Hackathon initiative empowering the backbone of India with MERN stack innovation.</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 20px; color: var(--teal);">Core Technologies</h4>
+                    <ul style="list-style: none; opacity: 0.7; line-height: 2;">
+                        <li>React / Next.js Framework</li>
+                        <li>Node.js Backend Ecosystem</li>
+                        <li>MongoDB NoSQL Architecture</li>
+                        <li>Python Data Science Libraries</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 20px; color: var(--teal);">Developed By</h4>
+                    <p style="opacity: 0.7; line-height: 1.6;">
+                        <strong>Team THE BOYS</strong><br>
+                        SDIET Campus<br>
+                        Faridabad, Haryana
+                    </p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); opacity: 0.5; font-size: 0.85rem; font-weight: 500;">
+                Turning data into decisions — and dreams into reality. 💖 | &copy; 2026
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. Preloader Logic ---
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                preloader.style.opacity = '0';
+                setTimeout(() => preloader.style.visibility = 'hidden', 600);
+            }, 1500); // 1.5s delay to ensure judge sees the branding
+        });
+
+        // --- 2. Header Scroll Effect ---
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) header.classList.add('scrolled');
+            else header.classList.remove('scrolled');
+        });
+
+        // --- 3. Scroll Reveal Observer ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    // Retrigger chart animation if visible
+                    if(entry.target.querySelector('.mock-chart')) {
+                        const bars = entry.target.querySelectorAll('.chart-bar');
+                        bars.forEach(bar => {
+                            bar.style.animation = 'none';
+                            bar.offsetHeight; /* trigger reflow */
+                            bar.style.animation = null; 
+                        });
+                    }
+                }
+            });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // --- 4. 3D Interactive Tilt Effect for Cards ---
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left; // x position within the element
+                const y = e.clientY - rect.top;  // y position within the element
+                
+                // Set CSS variables for the dynamic glow effect
+                card.style.setProperty('--x', `${x}px`);
+                card.style.setProperty('--y', `${y}px`);
+
+                // Calculate rotation (max 10 degrees)
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -10;
+                const rotateY = ((x - centerX) / centerX) * 10;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        });
+    </script>
+</body>
+</html>
