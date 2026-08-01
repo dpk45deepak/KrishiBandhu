@@ -13,6 +13,7 @@ from app.data.profiling.profiler import (
     CategoricalSummary,
     ProfilingResult,
 )
+from app.data.profiling.report_generator import ReportGenerator
 from app.constants.constants import OUTLIER_IQR_MULTIPLIER
 
 
@@ -141,6 +142,24 @@ class TestDataProfiler:
         result = profiler.profile(csv_path)
 
         assert 0.0 <= result.quality_score <= 1.0
+
+    def test_report_generation_handles_null_numeric_summary(self, tmp_path: Path) -> None:
+        """Test that reports are generated even when numeric stats are unavailable."""
+        csv_path = tmp_path / "null_stats.csv"
+        pd.DataFrame({"all_missing": [None, None, None], "category": ["A", "B", "C"]}).to_csv(
+            csv_path, index=False
+        )
+
+        profiler = DataProfiler(engine="pandas")
+        result = profiler.profile(csv_path)
+        report_generator = ReportGenerator(output_dir=tmp_path / "reports")
+
+        paths = report_generator.generate_all(result)
+
+        assert Path(paths["html"]).exists()
+        assert Path(paths["json"]).exists()
+        assert Path(paths["markdown"]).exists()
+        assert "n/a" in Path(paths["markdown"]).read_text(encoding="utf-8").lower()
 
     def test_quality_score_perfect_data(self, tmp_path: Path) -> None:
         """Test that perfect data gets a high quality score."""

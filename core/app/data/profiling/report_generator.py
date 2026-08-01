@@ -229,18 +229,28 @@ class ReportGenerator:
             figure_divs += fig.to_html(full_html=False, include_plotlyjs=False)
             figure_divs += "\n"
 
+        def _format_optional(value: Any, fmt: str = "") -> str:
+            if value is None:
+                return "n/a"
+            if fmt:
+                return format(value, fmt)
+            return str(value)
+
         # Build column info rows
         column_rows = ""
         for col in result.columns:
             extra_info = ""
             if col.numeric_summary:
                 extra_info = (
-                    f"Mean: {col.numeric_summary.mean:.4f} | "
-                    f"Std: {col.numeric_summary.std:.4f} | "
-                    f"Outliers: {col.numeric_summary.outlier_count}"
+                    f"Mean: {_format_optional(col.numeric_summary.mean, '.4f')} | "
+                    f"Std: {_format_optional(col.numeric_summary.std, '.4f')} | "
+                    f"Outliers: {_format_optional(col.numeric_summary.outlier_count)}"
                 )
             elif col.categorical_summary:
-                extra_info = f"Unique: {col.categorical_summary.unique_count} | High Card: {col.categorical_summary.is_high_cardinality}"
+                extra_info = (
+                    f"Unique: {_format_optional(col.categorical_summary.unique_count)} | "
+                    f"High Card: {_format_optional(col.categorical_summary.is_high_cardinality)}"
+                )
 
             column_rows += f"""<tr>
                 <td>{col.name}</td>
@@ -487,6 +497,13 @@ class ReportGenerator:
 
     def _render_markdown(self, result: ProfilingResult) -> str:
         """Render a Markdown summary report."""
+        def _format_optional(value: Any, fmt: str = "") -> str:
+            if value is None:
+                return "n/a"
+            if fmt:
+                return format(value, fmt)
+            return str(value)
+
         lines = [
             f"# Data Profile Summary: {result.filename}",
             "",
@@ -515,11 +532,14 @@ class ReportGenerator:
             if col.numeric_summary:
                 ns = col.numeric_summary
                 lines.append(
-                    f"- **{col.name}**: mean={ns.mean:.4f}, "
-                    f"std={ns.std:.4f}, min={ns.min}, max={ns.max}, "
-                    f"skew={ns.skewness:.4f}, kurt={ns.kurtosis:.4f}, "
-                    f"outliers={ns.outlier_count} ({ns.outlier_ratio:.2%})"
+                    f"- **{col.name}**: mean={_format_optional(ns.mean, '.4f')}, "
+                    f"std={_format_optional(ns.std, '.4f')}, min={_format_optional(ns.min)}, "
+                    f"max={_format_optional(ns.max)}, skew={_format_optional(ns.skewness, '.4f')}, "
+                    f"kurt={_format_optional(ns.kurtosis, '.4f')}, "
+                    f"outliers={_format_optional(ns.outlier_count)} ({_format_optional(ns.outlier_ratio, '.2%')})"
                 )
+            else:
+                lines.append(f"- **{col.name}**: no numeric summary available")
 
         lines.extend(["", "## High Correlations", ""])
         if result.high_correlations:
