@@ -1,0 +1,100 @@
+....................F................................................... [ 37%]
+........................................................................ [ 75%]
+................................................                         [100%]
+================================== FAILURES ===================================
+_____________ TestDataProfiler.test_suggested_ml_task_regression ______________
+
+self = <core.tests.test_profiler.TestDataProfiler object at 0x0000028417DB26C0>
+tmp_path = WindowsPath('C:/Users/dpk41/AppData/Local/Temp/pytest-of-dpk41/pytest-9/test_suggested_ml_task_regress0')
+
+    def test_suggested_ml_task_regression(self, tmp_path: Path) -> None:
+        """Test ML task suggestion for regression data."""
+        file_path = tmp_path / "regression.csv"
+        file_path.parent.mkdir(parents=True, exist_ok=True)
+        np.random.seed(42)
+        # 30 rows with many repeated target values -> <90% unique -> becomes candidate
+        df = pd.DataFrame({
+            "feature": np.random.normal(50, 10, 30),
+            "target": np.repeat(np.arange(10), 3)[:30],  # only 10 uniques out of 30 rows
+        })
+        df.to_csv(file_path, index=False)
+    
+        profiler = DataProfiler()
+        result = profiler.profile(file_path)
+>       assert result.suggested_ml_task == "regression"
+E       AssertionError: assert 'classification' == 'regression'
+E         
+E         - regression
+E         + classification
+
+tests\test_profiler.py:203: AssertionError
+---------------------------- Captured stderr call -----------------------------
+2026-08-01 18:58:23.507 | DEBUG    | app.data.ingestion.loader:__init__:30 - DataLoader initialized with engine: pandas
+2026-08-01 18:58:23.507 | DEBUG    | app.data.profiling.profiler:__init__:115 - DataProfiler initialized with engine: pandas
+2026-08-01 18:58:23.508 | INFO     | app.data.profiling.profiler:profile:128 - Profiling regression.csv
+2026-08-01 18:58:23.508 | INFO     | app.data.ingestion.loader:load:65 - Loading C:\Users\dpk41\AppData\Local\Temp\pytest-of-dpk41\pytest-9\test_suggested_ml_task_regress0\regression.csv using pandas engine
+2026-08-01 18:58:23.508 | DEBUG    | app.data.ingestion.loader:_load_pandas:122 - Reading regression.csv with pandas
+2026-08-01 18:58:23.510 | INFO     | app.data.ingestion.loader:load:67 - Loaded regression.csv: 30 rows, 2 columns
+2026-08-01 18:58:23.510 | INFO     | app.utils.decorators:wrapper:30 - load completed in 0.0028s
+2026-08-01 18:58:23.519 | INFO     | app.data.profiling.profiler:profile:143 - Profiled regression.csv: 30 rows, 2 cols, quality=1.00
+2026-08-01 18:58:23.519 | INFO     | app.utils.decorators:wrapper:30 - profile completed in 0.0115s
+============================== warnings summary ===============================
+tests/test_profiler.py: 117 warnings
+  C:\Users\dpk41\OneDrive\Docs\KrishiBandhu\core\app\data\profiling\profiler.py:429: DeprecationWarning: is_categorical_dtype is deprecated and will be removed in a future version. Use isinstance(dtype, pd.CategoricalDtype) instead
+    pd.api.types.is_categorical_dtype(series)
+
+tests/test_profiler.py: 24 warnings
+  C:\Users\dpk41\OneDrive\Docs\KrishiBandhu\core\app\data\profiling\profiler.py:306: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.
+    summary.skewness = float(skew(clean, bias=False))
+
+tests/test_profiler.py: 24 warnings
+  C:\Users\dpk41\OneDrive\Docs\KrishiBandhu\core\app\data\profiling\profiler.py:307: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.
+    summary.kurtosis = float(kurtosis(clean, bias=False))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=============================== tests coverage ================================
+_______________ coverage: platform win32, python 3.12.4-final-0 _______________
+
+Name                                       Stmts   Miss  Cover   Missing
+------------------------------------------------------------------------
+app\__init__.py                                0      0   100%
+app\config\__init__.py                         0      0   100%
+app\config\config.py                          73      0   100%
+app\constants\__init__.py                      0      0   100%
+app\constants\constants.py                    41      1    98%   85
+app\data\__init__.py                           0      0   100%
+app\data\cleaning\__init__.py                  0      0   100%
+app\data\feature_engineering\__init__.py       0      0   100%
+app\data\ingestion\__init__.py                 0      0   100%
+app\data\ingestion\loader.py                  53     14    74%   55, 59, 116, 120, 136-147, 160-163
+app\data\profiling\__init__.py                 0      0   100%
+app\data\profiling\profiler.py               255     17    93%   135, 308-310, 340, 404-405, 451, 453, 463, 481, 510-512, 525, 566, 572
+app\data\profiling\report_generator.py       174     27    84%   81, 85, 93-96, 127, 159-187, 194, 205-223, 236, 271, 546-547, 556
+app\data\transformation\__init__.py            0      0   100%
+app\data\validation\__init__.py                7      0   100%
+app\data\validation\exceptions.py             17      0   100%
+app\data\validation\models.py                108      1    99%   241
+app\data\validation\report.py                125      4    97%   185, 467-469
+app\data\validation\rules.py                 441     12    97%   50, 91, 318, 691, 811, 849, 1053, 1157, 1178, 1222, 1260-1261
+app\data\validation\schema.py                126      5    96%   138, 240-241, 257-258
+app\data\validation\validator.py             188      7    96%   117, 246, 249-250, 273, 297-298
+app\logger\__init__.py                         0      0   100%
+app\logger\logger.py                          18      3    83%   38-42, 83
+app\ml\__init__.py                             0      0   100%
+app\ml\classification\__init__.py              0      0   100%
+app\ml\evaluation\__init__.py                  0      0   100%
+app\ml\explainability\__init__.py              0      0   100%
+app\ml\regression\__init__.py                  0      0   100%
+app\ml\tuning\__init__.py                      0      0   100%
+app\services\__init__.py                       0      0   100%
+app\utils\__init__.py                          0      0   100%
+app\utils\dataset_scanner.py                 162     57    65%   70-73, 90-91, 149-156, 163-166, 180-186, 206-207, 219-235, 245, 269-297
+app\utils\decorators.py                       45     27    40%   32-35, 56-69, 82-93
+app\utils\file_utils.py                       30     17    43%   33-37, 49-50, 78-87, 100
+app\utils\memory.py                           44     44     0%   3-85
+app\utils\path_utils.py                       27     11    59%   50-54, 66-71
+------------------------------------------------------------------------
+TOTAL                                       1934    247    87%
+=========================== short test summary info ===========================
+FAILED tests/test_profiler.py::TestDataProfiler::test_suggested_ml_task_regression
+1 failed, 191 passed, 165 warnings in 6.21s

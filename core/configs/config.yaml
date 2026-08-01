@@ -32,6 +32,14 @@ reporting:
   max_unique_values_for_high_cardinality: 50
   outlier_iqr_multiplier: 1.5
 
+validation:
+  strict_mode: false
+  fail_fast: false
+  max_missing_percentage: 0.1
+  duplicate_threshold: 0
+  report_generation: true
+  default_schema: "crop_schema.yaml"
+
 random_seed: 42
 supported_extensions:
   - ".csv"

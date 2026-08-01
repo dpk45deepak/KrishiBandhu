@@ -1,0 +1,173 @@
+name: "crop_schema"
+version: "1.0.0"
+description: "Validation schema for agricultural crop datasets"
+
+columns:
+  crop_name:
+    name: "crop_name"
+    required: true
+    dtype: "str"
+    nullable: false
+    min_length: 1
+    max_length: 100
+
+  state:
+    name: "state"
+    required: true
+    dtype: "str"
+    nullable: false
+    min_length: 2
+    max_length: 50
+
+  district:
+    name: "district"
+    required: true
+    dtype: "str"
+    nullable: false
+    min_length: 2
+    max_length: 50
+
+  season:
+    name: "season"
+    required: false
+    dtype: "str"
+    nullable: true
+    allowed_values: ["Kharif", "Rabi", "Zaid", "Summer", "Winter"]
+
+  temperature:
+    name: "temperature"
+    required: true
+    dtype: "float"
+    nullable: true
+    min_value: -20
+    max_value: 60
+
+  humidity:
+    name: "humidity"
+    required: true
+    dtype: "float"
+    nullable: true
+    min_value: 0
+    max_value: 100
+
+  rainfall:
+    name: "rainfall"
+    required: true
+    dtype: "float"
+    nullable: true
+    min_value: 0
+
+  nitrogen:
+    name: "nitrogen"
+    required: false
+    dtype: "float"
+    nullable: true
+    min_value: 0
+    max_value: 300
+
+  phosphorus:
+    name: "phosphorus"
+    required: false
+    dtype: "float"
+    nullable: true
+    min_value: 0
+    max_value: 150
+
+  potassium:
+    name: "potassium"
+    required: false
+    dtype: "float"
+    nullable: true
+    min_value: 0
+    max_value: 300
+
+  yield:
+    name: "yield"
+    required: true
+    dtype: "float"
+    nullable: true
+    min_value: 0
+
+  planting_date:
+    name: "planting_date"
+    required: false
+    dtype: "datetime"
+    nullable: true
+
+business_rules:
+  - name: "temperature_business_range"
+    description: "Temperature must be between -20 and 60 degrees Celsius"
+    function: "app.data.validation.rules.temperature_range"
+    parameters:
+      column: "temperature"
+    severity: "error"
+
+  - name: "humidity_business_range"
+    description: "Humidity must be between 0 and 100 percent"
+    function: "app.data.validation.rules.humidity_range"
+    parameters:
+      column: "humidity"
+    severity: "error"
+
+  - name: "rainfall_non_negative"
+    description: "Rainfall must be non-negative"
+    function: "app.data.validation.rules.rainfall_non_negative"
+    parameters:
+      column: "rainfall"
+    severity: "error"
+
+  - name: "nitrogen_business_range"
+    description: "Nitrogen must be between 0 and 300 kg/ha"
+    function: "app.data.validation.rules.nitrogen_range"
+    parameters:
+      column: "nitrogen"
+    severity: "error"
+
+  - name: "phosphorus_business_range"
+    description: "Phosphorus must be between 0 and 150 kg/ha"
+    function: "app.data.validation.rules.phosphorus_range"
+    parameters:
+      column: "phosphorus"
+    severity: "error"
+
+  - name: "potassium_business_range"
+    description: "Potassium must be between 0 and 300 kg/ha"
+    function: "app.data.validation.rules.potassium_range"
+    parameters:
+      column: "potassium"
+    severity: "error"
+
+  - name: "yield_non_negative"
+    description: "Yield must be non-negative"
+    function: "app.data.validation.rules.yield_non_negative"
+    parameters:
+      column: "yield"
+    severity: "error"
+
+  - name: "crop_name_not_empty"
+    description: "Crop name cannot be empty"
+    function: "app.data.validation.rules.crop_name_not_empty"
+    parameters:
+      column: "crop_name"
+    severity: "error"
+
+  - name: "state_not_numeric"
+    description: "State cannot be numeric"
+    function: "app.data.validation.rules.state_not_numeric"
+    parameters:
+      column: "state"
+    severity: "error"
+
+  - name: "district_not_null"
+    description: "District cannot be null"
+    function: "app.data.validation.rules.district_not_null"
+    parameters:
+      column: "district"
+    severity: "error"
+
+  - name: "date_not_in_future"
+    description: "Planting date cannot be in the future"
+    function: "app.data.validation.rules.date_not_in_future"
+    parameters:
+      column: "planting_date"
+    severity: "error"

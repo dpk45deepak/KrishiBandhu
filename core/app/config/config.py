@@ -61,6 +61,26 @@ class ReportingConfig(BaseModel):
     outlier_iqr_multiplier: float = 1.5
 
 
+class ValidationConfig(BaseModel):
+    """Configuration for the data validation framework.
+
+    Attributes:
+        strict_mode: Raise an exception when validation fails.
+        fail_fast: Stop rule execution after the first failing rule.
+        max_missing_percentage: Default maximum null ratio before failure.
+        duplicate_threshold: Default maximum duplicate rows tolerated.
+        report_generation: Whether to generate validation reports.
+        default_schema: Optional default schema file for validation runs.
+    """
+
+    strict_mode: bool = False
+    fail_fast: bool = False
+    max_missing_percentage: float = Field(default=0.1, ge=0.0, le=1.0)
+    duplicate_threshold: int = Field(default=0, ge=0)
+    report_generation: bool = True
+    default_schema: str = "crop_schema.yaml"
+
+
 class Settings(BaseModel):
     """Root configuration model for AgriMind AI."""
 
@@ -68,6 +88,7 @@ class Settings(BaseModel):
     paths: PathsConfig = PathsConfig()
     logging: LoggingConfig = LoggingConfig()
     reporting: ReportingConfig = ReportingConfig()
+    validation: ValidationConfig = ValidationConfig()
     random_seed: int = 42
     supported_extensions: list[str] = Field(
         default_factory=lambda: [".csv", ".xls", ".xlsx", ".parquet"]
