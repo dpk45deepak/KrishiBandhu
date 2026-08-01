@@ -1,0 +1,40 @@
+project:
+  name: "AgriMind AI"
+  version: "0.1.0"
+  description: "Agricultural Intelligence Platform"
+  environment: "development"
+
+paths:
+  data_raw: "data/raw"
+  data_interim: "data/interim"
+  data_processed: "data/processed"
+  data_feature_store: "data/feature_store"
+  models: "models"
+  reports_profiling: "reports/profiling"
+  reports_validation: "reports/validation"
+  reports_eda: "reports/eda"
+  logs: "logs"
+  scripts: "scripts"
+  docs: "docs"
+
+logging:
+  level: "DEBUG"
+  rotation: "10 MB"
+  retention: "30 days"
+  format: "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan> | <level>{message}</level>"
+  file_format: "{time:YYYY-MM-DD HH:mm:ss.SSS} | {level: <8} | {name} | {message}"
+  colored: true
+
+reporting:
+  profiling_format: "html"
+  include_plots: true
+  correlation_threshold: 0.7
+  max_unique_values_for_high_cardinality: 50
+  outlier_iqr_multiplier: 1.5
+
+random_seed: 42
+supported_extensions:
+  - ".csv"
+  - ".xls"
+  - ".xlsx"
+  - ".parquet"
