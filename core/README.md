@@ -78,6 +78,85 @@ python main.py report
 
 # Enable verbose logging
 python main.py --verbose scan
+
+# Clean entire directory:
+python main.py clean data/raw/ --save-interim
+
+# Clean multiple datasets in parallel:
+python main.py clean data/raw/ --parallel --workers 8
+
+# Generate cleaning reports:
+python main.py clean data/raw/ --report reports/cleaning/
+
+# Standardize a dataset
+python main.py standardize dataset --schema crop --input data.csv
+
+# List registered datasets
+python main.py registry list
+
+# Validate dataset against schema
+python main.py registry validate crop
+
+# Batch processing
+python main.py standardize batch --schema crop --dir data/
+
+# Generate EDA reports
+python main.py eda data/raw/my_dataset.csv
+
+# Generate validation reports
+python main.py validate data/raw/my_dataset.csv
+
+# Generate profiling reports
+python main.py profile data/raw/my_dataset.csv
+
+# Generate quality score report
+python main.py quality data/raw/my_dataset.csv
+
+# Generate suggestions for ML tasks
+python main.py suggest data/raw/my_dataset.csv
+
+# Generate reports for all datasets
+python main.py report
+
+# Generate reports for a specific dataset
+python main.py report data/raw/my_dataset.csv
+
+# Generate reports for all datasets in parallel
+python main.py report --parallel
+
+# Generate reports for a specific dataset in parallel
+python main.py report data/raw/my_dataset.csv --parallel
+
+# Generate reports for all datasets in parallel with 8 workers
+python main.py report --parallel --workers 8
+
+# Generate reports for a specific dataset in parallel with 8 workers
+python main.py report data/raw/my_dataset.csv --parallel --workers 8
+
+# Run full pipeline
+python main.py pipeline data/dataset.csv
+
+# Resume from checkpoint
+python main.py pipeline --resume
+
+# Dry run (validate)
+python main.py pipeline --dry-run
+
+# Parallel execution
+python main.py pipeline --parallel
+
+# Run specific stage
+python main.py pipeline --stage validation
+
+# Show status
+python main.py pipeline status
+
+# List stages
+python main.py pipeline list-stages
+
+# Clean checkpoints
+python main.py pipeline clean
+
 ```
 
 ## CLI Commands

@@ -288,6 +288,8 @@ Crop Suitability Score
 Store everything
 
 feature_store/
+
+
 Sprint 6 — EDA Engine
 
 Currently
@@ -306,6 +308,8 @@ Crop distributions
 Missing value plots
 Feature importance previews
 PCA visualization
+
+
 Sprint 7 — Dataset Registry
 
 One feature almost no student project has.
