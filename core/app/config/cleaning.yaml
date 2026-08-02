@@ -1,0 +1,201 @@
+# AgriMind AI - Data Cleaning Configuration
+# This configuration defines all cleaning operations for the data pipeline
+
+dataset_name: "agricultural_data"
+enabled: true
+preserve_original: true
+
+# Column Name Standardization
+column_standardization:
+  enabled: true
+  strategy: "column_standardization"
+  params:
+    case: "lower"  # lower, upper, title
+    replace_spaces: "_"
+    remove_special: true
+  priority: 0
+
+# Column Aliases (for standardization)
+column_aliases:
+  temperature:
+    - "temp"
+    - "temperature"
+    - "t"
+    - "avg_temp"
+    - "max_temp"
+    - "min_temp"
+  rainfall:
+    - "rain"
+    - "precipitation"
+    - "ppt"
+    - "rainfall_mm"
+  humidity:
+    - "hum"
+    - "relative_humidity"
+    - "rh"
+  yield:
+    - "crop_yield"
+    - "yield_kg"
+    - "production"
+  location:
+    - "site"
+    - "field"
+    - "plot"
+
+# Data Type Conversion
+data_type_conversion:
+  enabled: true
+  params:
+    infer_objects: true
+    convert_numeric: true
+    convert_dates: true
+  priority: 10
+
+# Text Cleaning
+text_cleaning:
+  enabled: true
+  params:
+    trim: true
+    remove_whitespace: true
+    case_normalization: "lower"  # lower, upper, title, null
+    remove_special_chars: true
+    remove_invalid_chars: true
+    null_string_conversion: true
+  priority: 20
+
+# Duplicate Removal
+duplicate_removal:
+  enabled: true
+  strategy: "duplicates"
+  params:
+    keep: "first"  # first, last, false
+    subset: null  # Specific columns to check for duplicates
+  priority: 30
+
+# Remove Empty Rows
+remove_empty_rows:
+  enabled: true
+  params:
+    how: "threshold"  # all, any, threshold
+    threshold: 0.5  # Remove rows with more than 50% missing values
+  priority: 40
+
+# Remove Empty Columns
+remove_empty_columns:
+  enabled: true
+  params:
+    threshold: 0.9  # Remove columns with more than 90% missing values
+  priority: 50
+
+# Encoding Fixes
+encoding_fixes:
+  enabled: true
+  params:
+    encoding: "utf-8"
+    errors: "replace"
+  priority: 60
+
+# Missing Value Handling (per column)
+missing_values:
+  temperature:
+    enabled: true
+    strategy: "mean"  # drop_row, drop_column, mean, median, mode, constant, forward_fill, backward_fill, interpolate, custom
+    params: {}
+    columns: ["temperature"]
+  humidity:
+    enabled: true
+    strategy: "median"
+    params: {}
+    columns: ["humidity"]
+  rainfall:
+    enabled: true
+    strategy: "interpolate"
+    params: {}
+    columns: ["rainfall"]
+
+# Outlier Handling (per column)
+outlier_handling:
+  temperature:
+    enabled: true
+    strategy: "clip"  # iqr, zscore, winsorize, clip, remove, keep
+    params:
+      threshold: 3.0  # For Z-score method
+    columns: ["temperature"]
+  yield:
+    enabled: true
+    strategy: "winsorize"
+    params: {}
+    columns: ["yield"]
+
+# Unit Standardization
+unit_conversion:
+  temperature:
+    enabled: true
+    columns: ["temperature"]
+    conversions:
+      - from_unit: "celsius"
+        to_unit: "celsius"  # No conversion, just standardization
+      - from_unit: "fahrenheit"
+        to_unit: "celsius"
+      - from_unit: "kelvin"
+        to_unit: "celsius"
+  rainfall:
+    enabled: true
+    columns: ["rainfall"]
+    conversions:
+      - from_unit: "mm"
+        to_unit: "mm"  # Standardize to mm
+      - from_unit: "cm"
+        to_unit: "mm"
+      - from_unit: "m"
+        to_unit: "mm"
+  area:
+    enabled: true
+    columns: ["area", "field_size"]
+    conversions:
+      - from_unit: "hectare"
+        to_unit: "hectare"  # Standardize to hectare
+      - from_unit: "acre"
+        to_unit: "hectare"
+  weight:
+    enabled: true
+    columns: ["yield", "biomass"]
+    conversions:
+      - from_unit: "kg"
+        to_unit: "kg"  # Standardize to kg
+      - from_unit: "g"
+        to_unit: "kg"
+      - from_unit: "metric_ton"
+        to_unit: "kg"
+
+# Unit Mappings (for automatic detection)
+unit_mappings:
+  temperature:
+    - from_unit: "celsius"
+      to_unit: "celsius"
+    - from_unit: "fahrenheit"
+      to_unit: "celsius"
+    - from_unit: "kelvin"
+      to_unit: "celsius"
+  rainfall:
+    - from_unit: "mm"
+      to_unit: "mm"
+    - from_unit: "cm"
+      to_unit: "mm"
+    - from_unit: "m"
+      to_unit: "mm"
+  area:
+    - from_unit: "hectare"
+      to_unit: "hectare"
+    - from_unit: "acre"
+      to_unit: "hectare"
+  weight:
+    - from_unit: "kg"
+      to_unit: "kg"
+    - from_unit: "gram"
+      to_unit: "kg"
+    - from_unit: "metric_ton"
+      to_unit: "kg"
+
+# Custom Operations (optional)
+custom_operations: []

@@ -1,0 +1,84 @@
+# configs/schemas/crop.yaml
+schema_name: crop
+schema_version: 1.0.0
+description: Schema for crop-related agricultural data
+source: Ministry of Agriculture
+owner: AgriMind Team
+license: Proprietary
+
+columns:
+  - name: date
+    data_type: date
+    description: Date of observation
+    required: true
+    
+  - name: crop_type
+    data_type: category
+    description: Type of crop
+    required: true
+    
+  - name: variety
+    data_type: string
+    description: Crop variety name
+    required: false
+    
+  - name: planted_area
+    data_type: float
+    unit: hectare
+    unit_category: area
+    description: Area planted with crop
+    min_value: 0
+    required: true
+    
+  - name: yield
+    data_type: float
+    unit: kg/ha
+    unit_category: weight_per_area
+    description: Crop yield in kg per hectare
+    min_value: 0
+    required: true
+    is_target: true
+    
+  - name: temperature
+    data_type: float
+    unit: celsius
+    unit_category: temperature
+    description: Average temperature in Celsius
+    min_value: -50
+    max_value: 60
+    required: false
+    
+  - name: rainfall
+    data_type: float
+    unit: mm
+    unit_category: length
+    description: Total rainfall in millimeters
+    min_value: 0
+    required: false
+    
+  - name: humidity
+    data_type: float
+    unit: percentage
+    description: Average humidity percentage
+    min_value: 0
+    max_value: 100
+    required: false
+    
+  - name: soil_type
+    data_type: category
+    description: Type of soil
+    required: false
+    
+  - name: region
+    data_type: string
+    description: Geographic region
+    required: false
+
+primary_key:
+  - date
+  - crop_type
+  - region
+
+target_column: yield
+
+update_frequency: daily

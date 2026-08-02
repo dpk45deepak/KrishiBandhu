@@ -1,0 +1,112 @@
+name: "agrimind_pipeline"
+version: "1.0.0"
+execution_mode: "sequential"  # sequential, parallel, conditional
+max_parallel_workers: 4
+enable_checkpointing: true
+enable_metrics: true
+enable_hooks: true
+artifact_dir: "reports/pipeline"
+log_level: "INFO"
+
+stages:
+  - name: "scan"
+    enabled: true
+    retry_count: 3
+    retry_delay: 5
+    timeout: 300
+    depends_on: []
+    parallel_group: "data_ingestion"
+    config:
+      dataset_dir: "data/raw"
+      file_pattern: "*.csv"
+      
+  - name: "profile"
+    enabled: true
+    retry_count: 3
+    retry_delay: 5
+    timeout: 600
+    depends_on: ["scan"]
+    parallel_group: "data_ingestion"
+    config:
+      detailed_stats: true
+      correlation_matrix: true
+      
+  - name: "validate"
+    enabled: true
+    retry_count: 3
+    retry_delay: 5
+    timeout: 600
+    depends_on: ["profile"]
+    parallel_group: "data_ingestion"
+    config:
+      validation_rules:
+        - "no_nulls_in_required_fields"
+        - "numeric_ranges"
+        - "categorical_values"
+      fail_on_error: false
+      
+  - name: "clean"
+    enabled: true
+    retry_count: 3
+    retry_delay: 5
+    timeout: 900
+    depends_on: ["validate"]
+    config:
+      strategies:
+        missing: "impute"
+        outliers: "clip"
+      impute_method: "mean"
+      
+  - name: "standardize"
+    enabled: true
+    retry_count: 3
+    retry_delay: 5
+    timeout: 600
+    depends_on: ["clean"]
+    config:
+      target_schema: "agrimind_schema_v2"
+      preserve_original: false
+      
+  - name: "feature_engineering"
+    enabled: true
+    retry_count: 3
+    retry_delay: 5
+    timeout: 1200
+    depends_on: ["standardize"]
+    config:
+      feature_groups:
+        - "temporal_features"
+        - "statistical_features"
+        - "composite_features"
+      scale_features: true
+      
+  - name: "feature_store"
+    enabled: true
+    retry_count: 3
+    retry_delay: 5
+    timeout: 600
+    depends_on: ["feature_engineering"]
+    config:
+      backend: "local"  # local, s3, gcs, etc.
+      versioning: true
+      
+  - name: "eda"
+    enabled: true
+    retry_count: 2
+    retry_delay: 5
+    timeout: 1800
+    depends_on: ["feature_store"]
+    config:
+      visualizations: true
+      report_types: ["summary", "correlation", "outliers"]
+      
+  - name: "save"
+    enabled: true
+    retry_count: 2
+    retry_delay: 5
+    timeout: 300
+    depends_on: ["eda"]
+    config:
+      output_dir: "data/processed"
+      formats: ["parquet", "csv"]
+      compress: true

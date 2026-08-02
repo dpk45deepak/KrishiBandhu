@@ -1,0 +1,47 @@
+# configs/eda.yaml
+# EDA Configuration File
+
+# General Settings
+enable_statistics: true
+enable_correlation: true
+enable_pca: true
+enable_clustering: true
+enable_geospatial: true
+enable_quality_analysis: true
+
+# Analysis Parameters
+max_categories_to_plot: 20
+correlation_threshold: 0.5
+pca_components: 5
+max_clusters: 10
+outlier_threshold: 1.5
+
+# Visualization Settings
+visualization:
+  fig_width: 800
+  fig_height: 600
+  template: "plotly_white"
+  color_continuous_scale: "Viridis"
+  color_discrete_sequence:
+    - "#636EFA"
+    - "#EF553B"
+    - "#00CC96"
+    - "#AB63FA"
+    - "#FFA15A"
+    - "#19D3F3"
+    - "#FF6692"
+    - "#B6E880"
+  font_size: 12
+  title_font_size: 16
+  show_grid: true
+  save_formats:
+    - "png"
+    - "svg"
+    - "html"
+
+# Feature Configuration
+numerical_features: []  # Auto-detect if empty
+categorical_features: []  # Auto-detect if empty
+geospatial_features: []  # Auto-detect if empty
+target_feature: null
+ignore_features: []

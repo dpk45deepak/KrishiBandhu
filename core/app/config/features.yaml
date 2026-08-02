@@ -1,0 +1,67 @@
+# configs/features.yaml
+feature_selection:
+  enabled: true
+  method: variance_threshold
+  threshold: 0.01
+
+scaling:
+  enabled: true
+  method: standard
+  columns: []
+
+encoding:
+  enabled: true
+  method: one_hot
+  max_categories: 20
+
+interactions:
+  enabled: true
+  methods:
+    - multiplicative
+    - additive
+
+aggregations:
+  enabled: true
+  window: 7
+  functions:
+    - mean
+    - std
+    - min
+    - max
+
+domain_features:
+  enabled: true
+  agricultural:
+    - climate_index
+    - heat_index
+    - growing_degree_days
+    - soil_fertility
+    - npk_balance
+    - water_requirement
+    - crop_suitability
+    - risk_score
+
+store_backend:
+  offline: true
+  online: false
+  compression: gzip
+  partition_columns:
+    - year
+    - month
+
+versioning:
+  enabled: true
+  auto_increment: true
+
+reporting:
+  enabled: true
+  formats:
+    - json
+    - csv
+    - html
+    - png
+
+logging:
+  level: INFO
+  format: "{time} | {level} | {message}"
+  file: logs/feature_engineering.log
