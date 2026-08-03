@@ -10,441 +10,294 @@
 | **Sprint 9**  | **ML Model Training Framework**                | ⭐⭐⭐⭐⭐    |
 | **Sprint 10** | **GenAI + FastAPI + React Platform**           | ⭐⭐⭐⭐⭐    |
 
+You are a Distinguished AI Systems Architect and Full Stack Platform Engineer.
 
-First of all, this is already much better than 90% of student ML projects. The foundation you've built resembles a real data engineering platform rather than a notebook with a model.
+Project: AgriMind AI
 
-Now the important part is not jumping to ML.
+Current Status
 
-A lot of people think:
+The complete Data Platform and ML Platform are finished.
 
-Collect Data
-↓
-Train Random Forest
-↓
-Done
+Now build the production application.
 
-We won't do that.
+============================================================
 
-Where are we now?
-Raw Data
-      │
-      ▼
-Dataset Scanner ✅
-      │
-      ▼
-Profiler ✅
-      │
-      ▼
-Report Generator ✅
-      │
-      ▼
-Quality Score ✅
-      │
-      ▼
-CLI ✅
+OBJECTIVE
 
-The next stages should ensure that every dataset is trustworthy before it reaches any ML model.
+Transform AgriMind into a complete Agricultural Intelligence Platform.
 
-Sprint 2 — Data Validation Layer (Highest Priority)
+============================================================
 
-Current status:
+ARCHITECTURE
 
-app/data/validation/
+app/
 
+    services/
 
-This folder is still empty.
+        api/
 
-This should become one of the strongest modules in AgriMind.
+        auth/
 
-Goal
+        chat/
 
-Every dataset must pass validation before entering the pipeline.
+        rag/
 
-Example
+        agents/
 
-Suppose someone uploads
+        weather/
 
-Temperature
-150
+        recommendation/
 
-Your validator should reject it.
+        inference/
 
-Another example
-Rainfall = -20
+        websocket/
 
-Reject.
+        middleware/
 
-Another
-Humidity = 180%
+        security/
 
-Reject.
+frontend/
 
-Another
-Crop Name = NULL
+    React
 
-Reject.
+    Vite
 
-Components
-validation/
+    TailwindCSS
 
-    schema.py
+    TanStack Query
 
-    validator.py
+    React Router
 
-    rules.py
+============================================================
 
-    report.py
+BACKEND
 
-    exceptions.py
-Features
+FastAPI
 
-Schema validation
+Pydantic v2
 
-Required columns
+JWT Authentication
 
-Column datatype
+OAuth2
 
-Allowed values
+Role Based Access
 
-Range checking
+Dependency Injection
 
-Regex checking
+Async Architecture
 
-Duplicate checking
+============================================================
 
-Primary key checking
+DATABASE
 
-Missing value threshold
+PostgreSQL
 
-Business rules
+Redis
 
-Cross-column validation
+SQLAlchemy
 
-Example
+Alembic
 
-Nitrogen
+============================================================
 
-0-300
-Phosphorus
+RAG SYSTEM
 
-0-150
-Potassium
+Knowledge Sources
 
-0-300
-Temperature
+Agricultural Research Papers
 
--10 to 60
+Government Schemes
 
-Everything configurable.
+ICAR
 
-Sprint 3 — Cleaning Pipeline
+FAO
 
-Current folder
+Agriculture PDFs
 
-cleaning/
+Markdown
 
-Goal
+CSV
 
-Automatically clean datasets.
+============================================================
 
-Pipeline
+VECTOR DATABASE
 
-Raw
+Qdrant
 
-↓
+FAISS
 
-Missing Values
+Chroma
 
-↓
+============================================================
 
-Duplicates
+LLM SUPPORT
 
-↓
+OpenAI
 
-Data Type Fix
+Claude
 
-↓
+Gemini
 
-String Normalization
+Local Ollama
 
-↓
+============================================================
 
-Unit Conversion
+MULTI AGENT SYSTEM
 
-↓
+Router Agent
 
-Save Interim
+Crop Agent
 
-Example
+Soil Agent
 
-Input
+Weather Agent
 
-Rice
+Disease Agent
 
-rice
+Market Agent
 
-RICE
+Government Scheme Agent
 
- Rice
+Report Agent
 
-Output
+============================================================
 
-Rice
+TOOLS
 
-Example
+Weather APIs
 
-Rainfall
+Search APIs
 
-1200 mm
+Calculator
 
-1.2 meter
+Document Search
 
-120 cm
+CSV Search
 
-Convert all into one unit.
+============================================================
 
-Sprint 4 — Dataset Standardization
+CHAT
 
-This is very important.
+Streaming Responses
 
-You have
+Conversation Memory
 
-Dataset A
+Citation Support
 
-temperature
+Tool Calling
 
-Dataset B
+Markdown Output
 
-temp
+============================================================
 
-Dataset C
+REACT DASHBOARD
 
-avg_temp
+Landing Page
 
-Everything becomes
+Authentication
 
-temperature
+Admin Dashboard
 
-Similarly
+Farmer Dashboard
 
-State
-
-STATE
-
-Province
-
-Region
-
-Become
-
-state
-
-Now every dataset follows one schema.
-
-Sprint 5 — Feature Engineering
-
-Now we start creating intelligence.
-
-Not ML.
-
-Features.
-
-Example
-
-Raw
-
-Temperature
-
-Rainfall
-
-Humidity
-
-Create
-
-Climate Index
-
-Raw
-
-N
-
-P
-
-K
-
-Create
-
-NPK Ratio
-
-Raw
-
-Rainfall
-
-Temperature
-
-Create
-
-Crop Suitability Score
-
-Store everything
-
-feature_store/
-
-
-Sprint 6 — EDA Engine
-
-Currently
-
-reports/eda
-
-is mostly empty.
-
-Automatically generate
-
-Histograms
-Boxplots
-Correlation heatmaps
-State-wise charts
-Crop distributions
-Missing value plots
-Feature importance previews
-PCA visualization
-
-
-Sprint 7 — Dataset Registry
-
-One feature almost no student project has.
-
-registry/
-
-crop_dataset.yaml
-
-soil_dataset.yaml
-
-weather_dataset.yaml
-
-Contains
-
-Source
-
-License
-
-Rows
-
-Columns
-
-Version
-
-Checksum
-
-Owner
-
-Last Update
-
-Now AgriMind knows every dataset.
-
-Sprint 8 — Pipeline Engine
-
-Instead of manually calling everything
-
-Scan
-
-↓
-
-Profile
-
-↓
-
-Validate
-
-↓
-
-Clean
-
-↓
-
-Transform
-
-↓
-
-Feature Engineer
-
-↓
-
-Save
-
-One command
-
-python main.py pipeline
-
-Everything happens automatically.
-
-Sprint 9 — Data Versioning
-
-Every processed dataset gets
-
-v1
-
-v2
-
-v3
-
-
-Never overwrite.
-
-Keep history.
-
-Sprint 10 — Experiment Tracking
-
-Even before ML.
-
-Store
-
-Dataset Version
-
-Config
-
-Cleaning Steps
-
-Features Generated
-
-Validation Report
-
-Later MLflow can extend this.
-
-After Data Engineering Is Complete
-
-Only then should we move into the ML layer:
+AI Chat
 
 Crop Recommendation
 
-↓
-
 Yield Prediction
 
-↓
+Feature Store Viewer
 
-Fertilizer Recommendation
+Dataset Browser
 
-↓
+Model Registry
 
-Disease Prediction
+Pipeline Monitor
 
-↓
+Experiment Dashboard
 
-Irrigation Prediction
-Then GenAI
+Reports
 
-Build the AgriMind AI Assistant with:
+============================================================
 
-RAG over agricultural research papers.
-Government scheme recommendations.
-Explainable model predictions.
-Multilingual farmer chatbot.
-Crop planning assistance.
-Finally
-FastAPI
-React
+VISUALIZATIONS
+
+Plotly
+
+Charts
+
+Maps
+
+Analytics
+
+============================================================
+
+API
+
+/auth
+
+/chat
+
+/predict
+
+/models
+
+/features
+
+/datasets
+
+/reports
+
+/weather
+
+============================================================
+
+DEPLOYMENT
+
 Docker
+
+Docker Compose
+
+NGINX
+
+GitHub Actions
+
 CI/CD
-Cloud deployment
-Monitoring
+
+============================================================
+
+MONITORING
+
+Prometheus
+
+Grafana
+
+Health Checks
+
+Structured Logging
+
+============================================================
+
+TESTING
+
+Backend Tests
+
+Frontend Tests
+
+Integration Tests
+
+Coverage >95%
+
+============================================================
+
+QUALITY
+
+Enterprise Architecture
+
+Production Ready
+
+No Placeholders
+
+Generate implementation module-by-module.
+
+Never generate everything in one response.
