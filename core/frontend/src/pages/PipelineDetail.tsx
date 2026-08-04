@@ -1,4 +1,4 @@
-]// frontend/src/pages/PipelineDetail.tsx
+// frontend/src/pages/PipelineDetail.tsx
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '../lib/api';

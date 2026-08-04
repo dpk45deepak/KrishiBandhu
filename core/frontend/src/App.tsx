@@ -16,7 +16,7 @@ import Monitoring from "./pages/Monitoring";
 import Login from "./pages/Login";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const isAuthenticated = useAuthStore((s: any) => s.isAuthenticated);
   if (!isAuthenticated) return <Navigate to="/login" replace />;
   return <>{children}</>;
 }

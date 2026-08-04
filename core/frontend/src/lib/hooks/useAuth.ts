@@ -64,7 +64,7 @@ export function useLogin() {
 export function useCurrentUser() {
     const { setUser, logout, isAuthenticated } = useAuthStore();
 
-    return useQuery({
+    return useQuery<User, Error>({
         queryKey: ['currentUser'],
         queryFn: async () => {
             const { data } = await apiClient.get('/auth/me');
@@ -73,6 +73,5 @@ export function useCurrentUser() {
         },
         enabled: isAuthenticated,
         retry: false,
-        onError: () => logout(),
     });
 }

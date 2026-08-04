@@ -1,4 +1,5 @@
 // frontend/src/pages/FeatureStore.tsx
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "../lib/api";
 import { Layers, Database, Search, Clock, BarChart3 } from "lucide-react";
