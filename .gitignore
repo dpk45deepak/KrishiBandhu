@@ -1,0 +1,67 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environment
+.venv/
+venv/
+env/
+.uv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+logs/
+*.log
+
+# Data
+data/raw/*
+data/interim/*
+data/processed/*
+data/feature_store/*
+!data/**/.gitkeep
+
+# Models
+models/*
+!models/.gitkeep
+
+# Reports
+reports/profiling/*
+reports/validation/*
+reports/eda/*
+!reports/**/.gitkeep
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.coverage.*
+*.cover
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# OS
+.DS_Store
+Thumbs.db
+
+# MLflow
+mlruns/
+
+# DVC
+.dvc/
+*.dvc
+
+node_modules
