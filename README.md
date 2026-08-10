@@ -1,11 +1,10 @@
-# AgriMind AI — Agricultural Intelligence Platform
+# DataAnalysis — An Intelligence Data Analysis Platform
 
-Enterprise-grade foundation for agricultural machine learning and data engineering.
 
 ## Architecture
 
 ```
-AgriMind/
+root/
 ├── app/                    # Core application package
 │   ├── config/             # Pydantic v2 configuration from YAML
 │   ├── constants/          # Application-wide constants
